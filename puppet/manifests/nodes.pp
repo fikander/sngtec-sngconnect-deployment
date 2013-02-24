@@ -6,6 +6,7 @@ node "common" {
 }
 
 node "application" inherits "common" {
+  include monit_service
   include firewall_service
 }
 
@@ -17,6 +18,7 @@ node "database" inherits "common" {
     user_name             => "sngconnect",
     user_password         => "sngconnect",
   }
+  include monit_service
   include firewall_service
 }
 
@@ -27,6 +29,7 @@ node "cassandra" inherits "common" {
       "192.168.50.4",
     ],
   }
+  include monit_service
   include firewall_service
 }
 
