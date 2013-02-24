@@ -10,6 +10,8 @@ class utilities_service {
     'curl',
     'lshw',
     'tree',
+    'xz-utils',
+    'bzip2',
   ]
 
   package { $packages:
