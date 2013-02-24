@@ -20,7 +20,7 @@ Vagrant::Config.run do |config|
             "modifyvm", :id,
             "--memory", "256",
         ]
-        subconfig.vm.network :hostonly, "192.168.50.5"
+        subconfig.vm.network :hostonly, "192.168.50.2"
         subconfig.vm.forward_port 80, 9080
     end
 
@@ -30,7 +30,7 @@ Vagrant::Config.run do |config|
             "modifyvm", :id,
             "--memory", "256",
         ]
-        subconfig.vm.network :hostonly, "192.168.50.2"
+        subconfig.vm.network :hostonly, "192.168.50.3"
         subconfig.vm.forward_port 80, 8080
     end
 
@@ -40,7 +40,7 @@ Vagrant::Config.run do |config|
             "modifyvm", :id,
             "--memory", "512",
         ]
-        subconfig.vm.network :hostonly, "192.168.50.3"
+        subconfig.vm.network :hostonly, "192.168.50.4"
     end
 
     config.vm.define :cass1 do |subconfig|
@@ -51,7 +51,7 @@ Vagrant::Config.run do |config|
             "--cpus", "2",
             "--cpuexecutioncap", "100"
         ]
-        subconfig.vm.network :hostonly, "192.168.50.4"
+        subconfig.vm.network :hostonly, "192.168.50.5"
     end
 
 end

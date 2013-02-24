@@ -1,5 +1,5 @@
 node "common" {
-  $zabbix_server_address = "127.0.0.1"
+  $zabbix_server_address = "192.168.50.2"
 
   include user::virtual
   include user::administrators
@@ -21,7 +21,7 @@ node "monitor" inherits "common" {
     database_password => "zabbix",
   }
   class { "zabbix_frontend_service":
-    zabbix_server_address    => $ipaddress_eth1,
+    zabbix_server_address    => $zabbix_server_address,
     zabbix_database_address  => "127.0.0.1",
     zabbix_database_name     => "zabbix",
     zabbix_database_user     => "zabbix",
