@@ -98,6 +98,22 @@ class firewall_service {
     }
   }
 
+  if tagged("zabbix_agent_service") {
+    firewall { '100 allow zabbix agent':
+      state  => ['NEW'],
+      dport  => '10050',
+      proto  => 'tcp',
+      action => 'accept',
+    }
+    firewall { '100 allow zabbix agent (IPv6)':
+      state    => ['NEW'],
+      dport    => '10050',
+      proto    => 'tcp',
+      action   => 'accept',
+      provider => 'ip6tables',
+    }
+  }
+
   if tagged("cassandra_service") {
     firewall { '500 allow cassandra inter-node communication':
       state  => ['NEW'],

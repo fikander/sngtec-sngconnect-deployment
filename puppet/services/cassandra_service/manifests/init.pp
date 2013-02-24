@@ -64,7 +64,10 @@ class cassandra_service (
     ensure  => present,
     content => template("cassandra_service/cassandra.yaml"),
     notify  => Service["cassandra"],
-    require => File["/etc/cassandra"],
+    require => [
+      Class["cassandra::server"],
+      File["/etc/cassandra"],
+    ]
   }
 
   service { "cassandra":
