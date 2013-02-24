@@ -5,7 +5,7 @@ class utilities_service {
     'htop',
     'netcat',
     'bash-completion',
-    'vim-nox',
+    'vim',
     'screen',
     'curl',
     'lshw',
