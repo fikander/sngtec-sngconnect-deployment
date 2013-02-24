@@ -1,6 +1,7 @@
 node "common" {
   $zabbix_server_address = "127.0.0.1"
 
+  include user::virtual
   include user::administrators
   include ntp
   include utilities_service
