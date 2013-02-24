@@ -1,9 +1,6 @@
 class postgresql_service (
   $listening_address,
-  $allow_connection_from,
-  $database_name,
-  $user_name,
-  $user_password
+  $allow_connection_from
 ) {
 
   Exec {
@@ -15,12 +12,6 @@ class postgresql_service (
       ip_mask_allow_all_users => $allow_connection_from,
       listen_addresses        => $listening_address,
     }
-  }
-
-  postgresql::db { $database_name:
-    user     => $user_name,
-    password => $user_password,
-    require  => Class["postgresql::server"],
   }
 
   sysctl::value { "kernel.shmmax":

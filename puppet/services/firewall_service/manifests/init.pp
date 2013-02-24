@@ -89,28 +89,23 @@ class firewall_service {
       proto  => 'tcp',
       action => 'accept',
     }
-    firewall { '100 allow ssh (IPv6)':
-      state    => ['NEW'],
-      dport    => '22',
-      proto    => 'tcp',
-      action   => 'accept',
-      provider => 'ip6tables',
-    }
   }
 
   if tagged("zabbix_agent_service") {
-    firewall { '100 allow zabbix agent':
+    firewall { '500 allow zabbix agent':
       state  => ['NEW'],
       dport  => '10050',
       proto  => 'tcp',
       action => 'accept',
     }
-    firewall { '100 allow zabbix agent (IPv6)':
-      state    => ['NEW'],
-      dport    => '10050',
-      proto    => 'tcp',
-      action   => 'accept',
-      provider => 'ip6tables',
+  }
+
+  if tagged("zabbix_server_service") {
+    firewall { '500 allow zabbix server':
+      state  => ['NEW'],
+      dport  => '10051',
+      proto  => 'tcp',
+      action => 'accept',
     }
   }
 
