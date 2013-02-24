@@ -5,11 +5,19 @@ class monit_service {
     admin    => "admin@example.com",
   }
 
+  if tagged("ntp") {
+    monit::monitor { "ntp":
+      pidfile => "/var/run/ntpd.pid",
+    }
+    Class["ntp"] -> Class["monit_service"]
+  }
+
   if tagged("ssh_service") {
     monit::monitor { "ssh":
       pidfile => "/var/run/sshd.pid",
       ip_port => "22",
     }
+    Class["ssh_service"] -> Class["monit_service"]
   }
 
   if tagged("zabbix_agent_service") {
@@ -19,6 +27,7 @@ class monit_service {
         "if failed host ${zabbix_agent_service::listening_address} port 10050 type tcp then restart",
       ],
     }
+    Class["zabbix_agent_service"] -> Class["monit_service"]
   }
 
   if tagged("postgresql_service") {
@@ -28,6 +37,7 @@ class monit_service {
         "if failed host ${postgresql_service::listening_address} port 5432 type tcp then restart",
       ],
     }
+    Class["postgresql_service"] -> Class["monit_service"]
   }
 
   if tagged("cassandra_service") {
@@ -38,6 +48,7 @@ class monit_service {
         "if failed host ${cassandra_service::listening_address} port 9160 type tcp then restart",
       ],
     }
+    Class["cassandra_service"] -> Class["monit_service"]
   }
 
 }
