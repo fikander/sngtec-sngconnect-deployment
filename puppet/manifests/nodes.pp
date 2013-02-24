@@ -16,6 +16,16 @@ node "monitor" inherits "common" {
   class { "zabbix_server_service":
     listening_address => $ipaddress_eth1,
     database_address  => "127.0.0.1",
+    database_name     => "zabbix",
+    database_user     => "zabbix",
+    database_password => "zabbix",
+  }
+  class { "zabbix_frontend_service":
+    zabbix_server_address    => $ipaddress_eth1,
+    zabbix_database_address  => "127.0.0.1",
+    zabbix_database_name     => "zabbix",
+    zabbix_database_user     => "zabbix",
+    zabbix_database_password => "zabbix",
   }
   include monit_service
   include firewall_service

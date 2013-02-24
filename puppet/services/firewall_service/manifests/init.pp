@@ -109,6 +109,15 @@ class firewall_service {
     }
   }
 
+  if tagged("zabbix_frontend_service") {
+    firewall { '500 allow zabbix frontend':
+      state  => ['NEW'],
+      dport  => '80',
+      proto  => 'tcp',
+      action => 'accept',
+    }
+  }
+
   if tagged("cassandra_service") {
     firewall { '500 allow cassandra inter-node communication':
       state  => ['NEW'],
