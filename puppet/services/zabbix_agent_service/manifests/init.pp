@@ -1,5 +1,5 @@
 class zabbix_agent_service (
-  $listening_address,
+  $listening_addresses,
   $zabbix_server_address
 ) {
 

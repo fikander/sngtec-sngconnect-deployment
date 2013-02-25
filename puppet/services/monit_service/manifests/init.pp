@@ -23,9 +23,6 @@ class monit_service {
   if tagged("zabbix_agent_service") {
     monit::monitor { "zabbix-agent":
       pidfile => "/var/run/zabbix/zabbix_agentd.pid",
-      checks  => [
-        "if failed host ${zabbix_agent_service::listening_address} port 10050 type tcp then restart",
-      ],
     }
     Class["zabbix_agent_service"] -> Class["monit_service"]
   }

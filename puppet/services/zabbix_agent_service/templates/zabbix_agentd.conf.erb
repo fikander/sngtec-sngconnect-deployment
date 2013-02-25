@@ -110,7 +110,7 @@ Server=<%= zabbix_server_address %>
 #
 # Mandatory: no
 # Default:
-ListenIP=<%= listening_address %>
+ListenIP=<%= listening_addresses.join(',') %>
 
 ### Option: DisablePassive
 #	Disable passive checks. The agent will not listen on any TCP port.
