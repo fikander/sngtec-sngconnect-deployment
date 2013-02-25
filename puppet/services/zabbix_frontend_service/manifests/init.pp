@@ -18,6 +18,11 @@ class zabbix_frontend_service (
     ensure => present,
   }
 
+  file { "/var/www/index.html":
+    content => template("zabbix_frontend_service/index.html.erb"),
+    require => Package[$packages],
+  }
+
   file { "/etc/zabbix/dbconfig.php":
     content => template("zabbix_frontend_service/dbconfig.php.erb"),
     require => Package[$packages],
