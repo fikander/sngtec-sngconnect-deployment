@@ -21,4 +21,9 @@ class cassandra::server {
     ],
   }
 
+  file { "/etc/logrotate.d/cassandra":
+    content => template("cassandra/cassandra.logrotate.erb"),
+    require => Package["cassandra"],
+  }
+
 }
