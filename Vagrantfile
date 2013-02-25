@@ -18,7 +18,7 @@ Vagrant::Config.run do |config|
         subconfig.vm.host_name = "dev-mon"
         subconfig.vm.customize [
             "modifyvm", :id,
-            "--memory", "256",
+            "--memory", "1024",
         ]
         subconfig.vm.network :hostonly, "192.168.50.2"
         subconfig.vm.forward_port 80, 9080

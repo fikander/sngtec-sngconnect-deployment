@@ -1,3 +1,12 @@
+define host_name ($ip) {
+  host { $name:
+    ip => $ip ? {
+      $::ipaddress_eth1 => "127.0.1.1",
+      default           => $ip,
+    },
+  }
+}
+
 node "common" {
   $zabbix_server_address = "192.168.50.2"
 
@@ -6,6 +15,13 @@ node "common" {
   include ntp
   include utilities_service
   include ssh_service
+
+  host_name {
+    "dev-mon":    ip => "192.168.50.2";
+    "dev-app-1":  ip => "192.168.50.3";
+    "dev-db-1":   ip => "192.168.50.4";
+    "dev-cass-1": ip => "192.168.50.5";
+  }
 }
 
 node "monitor" inherits "common" {
@@ -26,6 +42,10 @@ node "monitor" inherits "common" {
     zabbix_database_name     => "zabbix",
     zabbix_database_user     => "zabbix",
     zabbix_database_password => "zabbix",
+  }
+  class { "zabbix_agent_service":
+    listening_address     => $ipaddress_eth1,
+    zabbix_server_address => $zabbix_server_address,
   }
   include monit_service
   include firewall_service
