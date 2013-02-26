@@ -100,11 +100,7 @@ node "cassandra" inherits "common" {
   include firewall_service
 }
 
-node /^\w+-mon.*$/ inherits "monitor" {
-}
-node /^\w+-app-\d+.*$/ inherits "application" {
-}
-node /^\w+-db-\d+.*$/ inherits "database" {
-}
-node /^\w+-cass-\d+.*$/ inherits "cassandra" {
-}
+node /^\w+-mon.*$/      inherits "monitor" {}
+node /^\w+-app-\d+.*$/  inherits "application" {}
+node /^\w+-db-\d+.*$/   inherits "database" {}
+node /^\w+-cass-\d+.*$/ inherits "cassandra" {}
