@@ -55,7 +55,9 @@ node "monitor" inherits "common" {
 }
 
 node "application" inherits "common" {
-  include sngconnect_service
+  class { "sngconnect_service":
+    database_address => "dev-db-1",
+  }
   class { "zabbix_agent_service":
     listening_addresses   => [
       $ipaddress_lo,

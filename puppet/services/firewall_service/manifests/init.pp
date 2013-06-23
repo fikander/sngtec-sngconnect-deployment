@@ -1,4 +1,7 @@
-class firewall_service {
+class firewall_service (
+  $allow_external_cassandra_access = true,
+  $allow_external_postgresql_access = true
+) {
 
   package { 'iptables-persistent':
     ensure => present,
@@ -118,27 +121,31 @@ class firewall_service {
     }
   }
 
-  if tagged("cassandra_service") {
-    firewall { '500 allow cassandra inter-node communication':
-      state  => ['NEW'],
-      dport  => '7000',
-      proto  => 'tcp',
-      action => 'accept',
-    }
-    firewall { '500 allow cassandra client communication':
-      state  => ['NEW'],
-      dport  => '9160',
-      proto  => 'tcp',
-      action => 'accept',
+  if $allow_external_cassandra_access {
+    if tagged("cassandra_service") {
+      firewall { '500 allow cassandra inter-node communication':
+        state  => ['NEW'],
+        dport  => '7000',
+        proto  => 'tcp',
+        action => 'accept',
+      }
+      firewall { '500 allow cassandra client communication':
+        state  => ['NEW'],
+        dport  => '9160',
+        proto  => 'tcp',
+        action => 'accept',
+      }
     }
   }
 
-  if tagged("postgresql_service") {
-    firewall { '500 allow postgresql':
-      state  => ['NEW'],
-      dport  => '5432',
-      proto  => 'tcp',
-      action => 'accept',
+  if $allow_external_postgresql_access {
+    if tagged("postgresql_service") {
+      firewall { '500 allow postgresql':
+        state  => ['NEW'],
+        dport  => '5432',
+        proto  => 'tcp',
+        action => 'accept',
+      }
     }
   }
 

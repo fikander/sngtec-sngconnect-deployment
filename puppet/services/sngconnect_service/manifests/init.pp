@@ -1,4 +1,6 @@
-class sngconnect_service {
+class sngconnect_service (
+  $database_address
+) {
 
   $installation_path = "/opt/sngconnect"
 
@@ -44,6 +46,12 @@ class sngconnect_service {
       File["/root/.ssh/config"],
       File["/root/.ssh/known_hosts"],
     ],
+  }
+
+  user { "sngconnect":
+    ensure     => present,
+    managehome => true,
+    shell      => "/bin/bash",
   }
 
 }
