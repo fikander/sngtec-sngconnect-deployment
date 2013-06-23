@@ -17,7 +17,7 @@ node "common" {
   include ssh_service
 }
 
-node "base" {
+node "base" inherits "common" {
   class { "postgresql_service":
     listening_address     => $ipaddress_lo,
     allow_connection_from => "${ipaddress_lo}/32",
