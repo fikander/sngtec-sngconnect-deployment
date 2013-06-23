@@ -3,148 +3,53 @@ class firewall_service (
   $allow_external_postgresql_access = true
 ) {
 
-  package { 'iptables-persistent':
-    ensure => present,
-  }
+  include ufw
 
-  exec { 'iptables-save':
-    command     => '/sbin/iptables-save > /etc/iptables/rules.v4',
-    refreshonly => true,
-    require     => Package['iptables-persistent'],
-  }
-  exec { 'ip6tables-save':
-    command     => '/sbin/ip6tables-save > /etc/iptables/rules.v6',
-    refreshonly => true,
-    require     => Package['iptables-persistent'],
-  }
-
-  Firewall {
-    notify => [
-      Exec['iptables-save'],
-      Exec['ip6tables-save'],
-    ],
-  }
-
-  firewall { '000 INPUT allow related and established':
-    state  => ['RELATED', 'ESTABLISHED'],
-    action => 'accept',
-    proto  => 'all',
-  }
-  firewall { '000 INPUT allow related and established (IPv6)':
-    state    => ['RELATED', 'ESTABLISHED'],
-    action   => 'accept',
-    proto    => 'all',
-    provider => 'ip6tables',
-  }
-
-  firewall { '001 accept all icmp requests':
-    proto  => 'icmp',
-    action => 'accept',
-  }
-  firewall { '001 accept all icmp requests (IPv6)':
-    proto    => 'ipv6-icmp',
-    action   => 'accept',
-    provider => 'ip6tables',
-  }
-
-  firewall { '002 INPUT allow loopback':
-    iniface => 'lo',
-    action  => 'accept',
-    proto   => 'all',
-  }
-  firewall { '002 INPUT allow loopback (IPv6)':
-    iniface  => 'lo',
-    action   => 'accept',
-    proto    => 'all',
-    provider => 'ip6tables',
-  }
-
-  firewall { '998 INPUT deny all other requests':
-    action => 'reject',
-    proto  => 'all',
-    reject => 'icmp-host-prohibited',
-  }
-  firewall { '998 INPUT deny all other requests (IPv6)':
-    action   => 'reject',
-    reject   => 'icmp6-adm-prohibited',
-    proto    => 'all',
-    provider => 'ip6tables',
-  }
-
-  firewall { '999 FORWARD deny all other requests':
-    chain  => 'FORWARD',
-    action => 'reject',
-    proto  => 'all',
-    reject => 'icmp-host-prohibited',
-  }
-  firewall { '999 FORWARD deny all other requests (IPv6)':
-    chain    => 'FORWARD',
-    action   => 'reject',
-    proto    => 'all',
-    reject   => 'icmp6-adm-prohibited',
-    provider => 'ip6tables',
-  }
-
-  if tagged("ssh_service") {
-    firewall { '100 allow ssh':
-      state  => ['NEW'],
-      dport  => '22',
-      proto  => 'tcp',
-      action => 'accept',
+  if tagged('ssh_service') {
+    ufw::allow { 'ssh':
+      port => 22,
     }
   }
 
-  if tagged("zabbix_agent_service") {
-    firewall { '500 allow zabbix agent':
-      state  => ['NEW'],
-      dport  => '10050',
-      proto  => 'tcp',
-      action => 'accept',
+  if tagged('zabbix_agent_service') {
+    ufw::allow { 'zabbix-agent':
+      port  => 10050,
+      proto => 'tcp'
     }
   }
 
   if tagged("zabbix_server_service") {
-    firewall { '500 allow zabbix server':
-      state  => ['NEW'],
-      dport  => '10051',
-      proto  => 'tcp',
-      action => 'accept',
+    ufw::allow { 'zabbix-server':
+      port  => 10051,
+      proto => 'tcp',
     }
   }
 
   if tagged("zabbix_frontend_service") {
-    firewall { '500 allow zabbix frontend':
-      state  => ['NEW'],
-      dport  => '80',
-      proto  => 'tcp',
-      action => 'accept',
+    firewall { 'zabbix-frontend':
+      port  => 80,
+      proto => 'tcp',
     }
   }
 
   if $allow_external_cassandra_access {
     if tagged("cassandra_service") {
-      firewall { '500 allow cassandra inter-node communication':
-        state  => ['NEW'],
-        dport  => '7000',
-        proto  => 'tcp',
-        action => 'accept',
+      ufw::allow { 'cassandra-internode':
+        port  => 7000,
+        proto => 'tcp',
       }
-      firewall { '500 allow cassandra client communication':
-        state  => ['NEW'],
-        dport  => '9160',
-        proto  => 'tcp',
-        action => 'accept',
+      ufw::allow { 'cassandra-client':
+        port  => 9160,
+        proto => 'tcp',
       }
     }
   }
 
   if $allow_external_postgresql_access {
     if tagged("postgresql_service") {
-      firewall { '500 allow postgresql':
-        state  => ['NEW'],
-        dport  => '5432',
-        proto  => 'tcp',
-        action => 'accept',
+      ufw::allow { 'postgresql':
+        port  => 5432,
+        proto => 'tcp',
       }
     }
   }
