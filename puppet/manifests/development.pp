@@ -10,6 +10,17 @@ define host_name ($ip) {
 node "common" {
   $zabbix_server_address = "192.168.50.2"
 
+  Exec {
+    path => [
+      '/usr/local/sbin',
+      '/usr/local/bin',
+      '/usr/sbin',
+      '/usr/bin',
+      '/sbin',
+      '/bin',
+    ],
+  }
+
   include user::virtual
   include user::administrators
   include ntp

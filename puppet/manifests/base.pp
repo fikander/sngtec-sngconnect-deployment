@@ -1,4 +1,15 @@
 node "common" {
+  Exec {
+    path => [
+      '/usr/local/sbin',
+      '/usr/local/bin',
+      '/usr/sbin',
+      '/usr/bin',
+      '/sbin',
+      '/bin',
+    ],
+  }
+
   include user::virtual
   include user::administrators
   include ntp
