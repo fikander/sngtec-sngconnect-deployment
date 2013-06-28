@@ -28,7 +28,7 @@ class user::virtual {
 
   @ssh_user {
     'tkustrzynski':
-      password => '',
+      password => '$6$LZrVP9dA$fMjAya8QF9c0R83VwH6LsFuILZ0on7Drn2H1RML096FU/w5GR6jaDR8umMReadlbg.NQ64KubLJb5HZfg46aL0',
       key_type => 'ssh-rsa',
       key      => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDA3ONSH0A4lUXhd0Fs3m/Uj7kDmxu5WtscE1kUf4EAhwljPbX9Q5vxiVaKwKtxGrKwvsKgCtfSt+37JqW3NY7UMYr9ZRK/dofu8CqM6JCJe09gDnl9KYW56GCzmojIkS6+DtTAY5nPu2z4NHO5JmEONOkQU19e/YvlTgLiJZXDX2QOSnwyVMCoBVfNHd7hM0sOGVHnk1KZkdeHv6DNRzeScQZW9Dxn6w12nClA02qmOekbeeWUl5350UA7XopXmaDPqywG2Jd4dDHxt9xA73SVEKESdg1qRpjKY0eUa6VVnH30HmdGoNFMR81QsBYy+NzWfPXLI88PNyt7AjAxR8y7',
       groups   => [
