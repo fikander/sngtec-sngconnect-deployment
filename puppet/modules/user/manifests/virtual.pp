@@ -8,7 +8,7 @@ class user::virtual {
       groups     => $groups,
       password   => $password,
     }
-    ssh_authorized_key { '${name}_key':
+    ssh_authorized_key { "${name}_key":
       key  => $key,
       type => $key_type,
       user => $name,
