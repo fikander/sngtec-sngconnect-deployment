@@ -69,8 +69,7 @@ node "application" inherits "common" {
   class { "sngconnect_service":
     database_address => "dev-db-1",
   }
-  class { "sngconnect_service::site":
-    codename => "example_com",
+  sngconnect_service::site { "example_com":
     listening_port => 8000,
     session_secret => "example_secret",
     cassandra_servers => [
@@ -79,8 +78,7 @@ node "application" inherits "common" {
     database_server => "192.168.50.4",
   }
   include nginx_service
-  class { "nginx_service::site":
-    codename => "example_com",
+  nginx_service::site { "example_com":
     port     => 8000,
     domain   => "sng.local",
   }

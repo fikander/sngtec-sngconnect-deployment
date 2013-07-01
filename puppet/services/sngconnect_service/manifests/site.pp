@@ -1,5 +1,4 @@
-class sngconnect_service::site (
-  $codename,
+define sngconnect_service::site (
   $listening_port,
   $session_secret,
   $cassandra_servers,
@@ -9,14 +8,14 @@ class sngconnect_service::site (
   require sngconnect_service
 
   $listening_address = "127.0.0.1"
-  $cassandra_keyspace = $codename
-  $database_name = $codename
-  $database_user = $codename
-  $database_password = $codename
-  $upload_path = "/var/lib/sngconnect/${codename}"
-  $pid_file = "/var/run/sngconnect/${codename}.pid"
-  $log_file = "/var/log/sngconnect/${codename}.log"
-  $configuration_file = "/etc/sngconnect/${codename}.ini"
+  $cassandra_keyspace = $name
+  $database_name = $name
+  $database_user = $name
+  $database_password = $name
+  $upload_path = "/var/lib/sngconnect/${name}"
+  $pid_file = "/var/run/sngconnect/${name}.pid"
+  $log_file = "/var/log/sngconnect/${name}.log"
+  $configuration_file = "/etc/sngconnect/${name}.ini"
 
   File {
     owner => "root",
@@ -28,7 +27,7 @@ class sngconnect_service::site (
     content => template("sngconnect_service/configuration.ini.erb"),
   }
 
-  file { "/etc/init.d/${codename}":
+  file { "/etc/init.d/${name}":
     ensure  => present,
     content => template("sngconnect_service/init_script.sh.erb"),
     mode    => "755",

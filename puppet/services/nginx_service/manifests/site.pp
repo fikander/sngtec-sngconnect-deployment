@@ -1,19 +1,20 @@
-class nginx_service::site (
-  $codename,
+define nginx_service::site (
   $port,
   $domain
 ) {
 
-   nginx::resource::upstream { $codename:
-     ensure  => present,
-     members => [
-       "localhost:${port}",
-     ],
-   }
+  require nginx_service
 
-   nginx::resource::vhost { $domain:
-     ensure      => present,
-     proxy       => "http://${codename}",
-   }
+  nginx::resource::upstream { $name:
+    ensure  => present,
+    members => [
+      "localhost:${port}",
+    ],
+  }
+
+  nginx::resource::vhost { $domain:
+    ensure => present,
+    proxy  => "http://${name}",
+  }
 
 }
