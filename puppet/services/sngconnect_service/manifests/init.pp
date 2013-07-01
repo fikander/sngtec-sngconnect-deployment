@@ -59,20 +59,12 @@ class sngconnect_service (
     shell   => "/bin/false",
     system  => true
   }
-  file { "/opt/sngconnect":
-    ensure  => directory,
-    owner   => "sngconnect",
-    group   => "sngconnect",
-    require => User["sngconnect"],
-  }
 
   exec { "/opt/sngconnect/bin":
     command   => "/usr/bin/virtualenv --python=python2.7 /opt/sngconnect",
     creates   => "/opt/sngconnect/bin",
-    user      => "sngconnect",
     logoutput => "on_failure",
     require   => [
-      User["sngconnect"],
       Package[$packages],
       File["/opt/sngconnect"],
     ],
@@ -82,16 +74,34 @@ class sngconnect_service (
     command   => "/opt/sngconnect/bin/pip install git+ssh://git@github.com/sngtec/sngconnect.git",
     creates   => "/opt/sngconnect/lib/python2.7/site-packages/sngconnect",
     timeout   => 1800,
-    user      => "sngconnect",
     logoutput => "on_failure",
     require   => [
-      User["sngconnect"],
       Package[$packages],
       Exec["/opt/sngconnect/bin"],
       File["/root/.ssh/staging_deployment"],
       File["/root/.ssh/config"],
       File["/root/.ssh/known_hosts"],
     ],
+  }
+
+  file { "/opt/sngconnect/lib/python2.7/site-packages/sngconnect/static/compressed":
+    ensure => directory,
+    owner  => "sngconnect",
+    group  => "sngconnect",
+    require => [
+      User["sngconnect"],
+      Exec["/opt/sngconnect/lib/python2.7/site-packages/sngconnect"],
+    ]
+  }
+  file
+  { "/opt/sngconnect/lib/python2.7/site-packages/sngconnect/static/.webassets-cache":
+    ensure => directory,
+    owner  => "sngconnect",
+    group  => "sngconnect",
+    require => [
+      User["sngconnect"],
+      Exec["/opt/sngconnect/lib/python2.7/site-packages/sngconnect"],
+    ]
   }
 
   file { "/etc/sngconnect":
