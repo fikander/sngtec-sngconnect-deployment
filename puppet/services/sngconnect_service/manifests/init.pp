@@ -59,14 +59,21 @@ class sngconnect_service (
     shell   => "/bin/false",
     system  => true
   }
+  file { "/opt/sngconnect":
+    ensure  => directory,
+    owner   => "sngconnect",
+    group   => "sngconnect",
+    require => User["sngconnect"],
+  }
 
-  exec { "/opt/sngconnect":
+  exec { "/opt/sngconnect/bin":
     command => "/usr/bin/virtualenv --python=python2.7 /opt/sngconnect",
-    creates => "/opt/sngconnect",
+    creates => "/opt/sngconnect/bin",
     user    => "sngconnect",
     require => [
       User["sngconnect"],
       Package[$packages],
+      File["/opt/sngconnect"],
     ],
   }
 
@@ -78,7 +85,7 @@ class sngconnect_service (
     require => [
       User["sngconnect"],
       Package[$packages],
-      Exec["/opt/sngconnect"],
+      Exec["/opt/sngconnect/bin"],
       File["/root/.ssh/staging_deployment"],
       File["/root/.ssh/config"],
       File["/root/.ssh/known_hosts"],
