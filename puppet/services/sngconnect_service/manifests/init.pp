@@ -53,10 +53,19 @@ class sngconnect_service (
     require => File["/root/.ssh"],
   }
 
+  user { "sngconnect":
+    ensure  => present,
+    home    => "/opt/sngconnect",
+    shell   => "/bin/false",
+    system  => true
+  }
+
   exec { "/opt/sngconnect":
     command => "/usr/bin/virtualenv --python=python2.7 /opt/sngconnect",
     creates => "/opt/sngconnect",
+    user    => "sngconnect",
     require => [
+      User["sngconnect"],
       Package[$packages],
     ],
   }
@@ -65,21 +74,15 @@ class sngconnect_service (
     command => "/opt/sngconnect/bin/pip install git+ssh://git@github.com/sngtec/sngconnect.git",
     creates => "/opt/sngconnect/lib/python2.7/site-packages/sngconnect",
     timeout => 1800,
+    user    => "sngconnect",
     require => [
+      User["sngconnect"],
       Package[$packages],
       Exec["/opt/sngconnect"],
       File["/root/.ssh/staging_deployment"],
       File["/root/.ssh/config"],
       File["/root/.ssh/known_hosts"],
     ],
-  }
-
-  user { "sngconnect":
-    ensure  => present,
-    home    => "/opt/sngconnect",
-    shell   => "/bin/false",
-    system  => true,
-    require => Exec["/opt/sngconnect"],
   }
 
   file { "/etc/sngconnect":
