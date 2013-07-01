@@ -31,6 +31,35 @@ node "base" inherits "common" {
   class { "sngconnect_service":
     database_address => "sng-base-1",
   }
+  class { "sngconnect_service::site":
+    codename => "hoven_sngconnect_com",
+    listening_port => 8001,
+    session_secret => "7iT28vXpcYnogucsBe9g9gxppApNKQ",
+    cassandra_servers => [
+      "127.0.0.1",
+    ],
+    database_server => "127.0.0.1",
+  }
+  class { "sngconnect_service::site":
+    codename => "connect_snghome_com",
+    listening_port => 8002,
+    session_secret => "TsvMKqDCKBEL7Uvj6nHrnYRcM9a26A",
+    cassandra_servers => [
+      "127.0.0.1",
+    ],
+    database_server => "127.0.0.1",
+  }
+  include nginx_service
+  class { "nginx_service::site":
+    codename => "hoven_sngconnect_com",
+    port     => 8001,
+    domain   => "hoven.sngconnect.com",
+  }
+  class { "nginx_service::site":
+    codename => "connect_snghome_com",
+    port     => 8002,
+    domain   => "connect.snghome.com",
+  }
   include monit_service
   class { "firewall_service":
     allow_external_cassandra_access  => false,

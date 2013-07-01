@@ -1,0 +1,109 @@
+[app:main]
+use = egg:sngconnect
+
+pyramid.reload_templates = false
+pyramid.debug_authorization = false
+pyramid.debug_notfound = false
+pyramid.debug_routematch = false
+pyramid.includes =
+webassets.debug = false
+
+database.url = postgresql+psycopg2://<%= database_user %>:<%= database_password %>@<%= database_server %>/<%= database_name %>
+
+cassandra.servers =
+<% cassandra_servers.each do |server| %>
+    <%= server %>
+<% end %>
+cassandra.keyspace = <%= cassandra_keyspace %>
+
+google_maps.api_key =
+
+pyramid.default_locale_name = pl
+
+session.secret = <%= session_secret %>
+
+sngconnect.default_timezone = Europe/Warsaw
+sngconnect.currency_code = PLN
+sngconnect.currency_format = {value} zł
+
+sngconnect.device_image_upload_path = <%= upload_path %>/devices
+sngconnect.appearance_assets_upload_path = <%= upload_path %>/appearance
+sngconnect.appearance_stylesheet_filename = stylesheet.css
+
+sngconnect.serwersms.url =
+sngconnect.serwersms.login =
+sngconnect.serwersms.password =
+
+sngconnect.prices.owner_standard =
+sngconnect.prices.owner_standard.activation =
+sngconnect.prices.owner_plus =
+sngconnect.prices.owner_plus.activation =
+sngconnect.prices.maintainer_plus =
+sngconnect.prices.maintainer_plus.activation =
+
+sngconnect.payments.order_maximum = 100000
+sngconnect.payments.vat =
+sngconnect.payments.token_prices.1 =
+sngconnect.payments.token_prices.101 =
+sngconnect.payments.token_prices.1001 =
+sngconnect.payments.token_prices.10001 =
+
+sngconnect.payments.payu.service_url =
+sngconnect.payments.payu.pos_id =
+sngconnect.payments.payu.pos_authorization_key =
+sngconnect.payments.payu.signature_key =
+
+; See http://docs.pylonsproject.org/projects/pyramid_mailer/en/latest/#configuration
+; for possible configuration options.
+mail.sender = noreply@example.com
+mail.host =
+mail.port =
+
+[server:main]
+use = egg:waitress#main
+host = <%= listening_address %>
+port = <%= listening_port %>
+
+# Begin logging configuration
+
+[loggers]
+keys = root, sngconnect, sqlalchemy, pycassa
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = WARN
+handlers = console
+
+[logger_sngconnect]
+level = WARN
+handlers =
+qualname = sngconnect
+
+[logger_sqlalchemy]
+level = WARN
+handlers =
+qualname = sqlalchemy.engine
+# "level = INFO" logs SQL queries.
+# "level = DEBUG" logs SQL queries and results.
+# "level = WARN" logs neither.  (Recommended for production systems.)
+
+[logger_pycassa]
+level = INFO
+handlers =
+qualname = pycassa
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(message)s
+
+# End logging configuration

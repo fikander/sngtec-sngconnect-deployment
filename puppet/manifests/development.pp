@@ -69,6 +69,21 @@ node "application" inherits "common" {
   class { "sngconnect_service":
     database_address => "dev-db-1",
   }
+  class { "sngconnect_service::site":
+    codename => "example_com",
+    listening_port => 8000,
+    session_secret => "example_secret",
+    cassandra_servers => [
+      "192.168.50.5",
+    ],
+    database_server => "192.168.50.4",
+  }
+  include nginx_service
+  class { "nginx_service::site":
+    codename => "example_com",
+    port     => 8000,
+    domain   => "sng.local",
+  }
   class { "zabbix_agent_service":
     listening_addresses   => [
       $ipaddress_lo,
@@ -85,6 +100,9 @@ node "database" inherits "common" {
     listening_address     => $ipaddress_eth1,
     allow_connection_from => "192.168.50.0/24",
   }
+  class { "postgresql_service::site":
+    codename => "example_com",
+  }
   class { "zabbix_agent_service":
     listening_addresses   => [
       $ipaddress_lo,
@@ -100,7 +118,7 @@ node "cassandra" inherits "common" {
   class { "cassandra_service":
     listening_address => $ipaddress_eth1,
     seed_addresses    => [
-      "192.168.50.4",
+      "192.168.50.5",
     ],
   }
   class { "zabbix_agent_service":

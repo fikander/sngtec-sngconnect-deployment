@@ -58,4 +58,14 @@ class monit_service {
     Class["cassandra_service"] -> Class["monit_service"]
   }
 
+  if tagged("nginx_service") {
+    monit::monitor { "nginx":
+      pidfile => "/var/run/nginx.pid",
+      checks  => [
+        "if failed host 127.0.0.1 port 80 type tcp then restart",
+      ],
+    }
+    Class["nginx_service"] -> Class["monit_service"]
+  }
+
 }

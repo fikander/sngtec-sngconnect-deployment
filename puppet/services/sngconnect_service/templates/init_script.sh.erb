@@ -1,0 +1,45 @@
+#!/bin/bash
+
+SU=/bin/su
+USER=sngconnect
+SHELL=/bin/sh
+
+PSERVE=/opt/sngconnect/bin/pserve
+CONFIGURATION="<%= configuration_file %>"
+
+LOG_FILE="<%= log_file %>"
+PID_FILE="<%= pid_file %>"
+
+start_service()
+{
+    $SU - $USER -s $SHELL -c "$PSERVE $CONFIGURATION --daemon --pid-file=$PID_FILE --log-file=$LOG_FILE"
+}
+
+stop_service()
+{
+    $SU - $USER -s $SHELL -c "$PSERVE $CONFIGURATION --stop-daemon --pid-file=$PID_FILE"
+}
+
+status_service()
+{
+    $SU - $USER -s $SHELL -c "$PSERVE $CONFIGURATION --status --pid-file=$PID_FILE"
+}
+
+case "$1" in
+    start)
+        start_service
+        ;;
+    stop)
+        stop_service
+        ;;
+    restart)
+        stop_service && start_service
+        ;;
+    status)
+        status_service
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}" >&2
+        exit 1
+        ;;
+esac
