@@ -1,10 +1,8 @@
-class postgresql_service::site (
-  $codename
-) {
+define postgresql_service::site () {
 
-  postgresql::db { $codename:
-    user     => $codename,
-    password => $codename,
+  postgresql::db { $name:
+    user     => $name,
+    password => $name,
   }
 
 }

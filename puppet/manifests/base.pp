@@ -22,6 +22,10 @@ node "base" inherits "common" {
     listening_address     => $ipaddress_lo,
     allow_connection_from => "${ipaddress_lo}/32",
   }
+  postgresql_service::site {
+    "hoven_sngconnect_com":;
+    "connect_snghome_com":;
+  }
   class { "cassandra_service":
     listening_address => $ipaddress_lo,
     seed_addresses    => [

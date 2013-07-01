@@ -98,8 +98,7 @@ node "database" inherits "common" {
     listening_address     => $ipaddress_eth1,
     allow_connection_from => "192.168.50.0/24",
   }
-  class { "postgresql_service::site":
-    codename => "example_com",
+  postgresql_service::site { "example_com":
   }
   class { "zabbix_agent_service":
     listening_addresses   => [

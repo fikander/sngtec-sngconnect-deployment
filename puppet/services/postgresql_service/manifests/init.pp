@@ -14,14 +14,6 @@ class postgresql_service (
     }
   }
 
-  postgresql::pg_hba_rule { 'allow local authentication with password':
-    description => 'Allow local authentication with password',
-    type        => 'local',
-    database    => 'all',
-    user        => 'all',
-    auth_method => 'md5',
-  }
-
   sysctl::value { "kernel.shmmax":
     value => "17179869184",
   }
