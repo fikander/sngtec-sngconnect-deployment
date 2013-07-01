@@ -67,10 +67,11 @@ class sngconnect_service (
   }
 
   exec { "/opt/sngconnect/bin":
-    command => "/usr/bin/virtualenv --python=python2.7 /opt/sngconnect",
-    creates => "/opt/sngconnect/bin",
-    user    => "sngconnect",
-    require => [
+    command   => "/usr/bin/virtualenv --python=python2.7 /opt/sngconnect",
+    creates   => "/opt/sngconnect/bin",
+    user      => "sngconnect",
+    logoutput => "on_failure",
+    require   => [
       User["sngconnect"],
       Package[$packages],
       File["/opt/sngconnect"],
@@ -78,11 +79,12 @@ class sngconnect_service (
   }
 
   exec { "/opt/sngconnect/lib/python2.7/site-packages/sngconnect":
-    command => "/opt/sngconnect/bin/pip install git+ssh://git@github.com/sngtec/sngconnect.git",
-    creates => "/opt/sngconnect/lib/python2.7/site-packages/sngconnect",
-    timeout => 1800,
-    user    => "sngconnect",
-    require => [
+    command   => "/opt/sngconnect/bin/pip install git+ssh://git@github.com/sngtec/sngconnect.git",
+    creates   => "/opt/sngconnect/lib/python2.7/site-packages/sngconnect",
+    timeout   => 1800,
+    user      => "sngconnect",
+    logoutput => "on_failure",
+    require   => [
       User["sngconnect"],
       Package[$packages],
       Exec["/opt/sngconnect/bin"],
