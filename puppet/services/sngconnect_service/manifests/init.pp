@@ -60,13 +60,12 @@ class sngconnect_service (
     system  => true
   }
 
-  exec { "/opt/sngconnect/bin":
+  exec { "/opt/sngconnect":
     command   => "/usr/bin/virtualenv --python=python2.7 /opt/sngconnect",
-    creates   => "/opt/sngconnect/bin",
+    creates   => "/opt/sngconnect",
     logoutput => "on_failure",
     require   => [
       Package[$packages],
-      File["/opt/sngconnect"],
     ],
   }
 
@@ -77,7 +76,7 @@ class sngconnect_service (
     logoutput => "on_failure",
     require   => [
       Package[$packages],
-      Exec["/opt/sngconnect/bin"],
+      Exec["/opt/sngconnect"],
       File["/root/.ssh/staging_deployment"],
       File["/root/.ssh/config"],
       File["/root/.ssh/known_hosts"],
