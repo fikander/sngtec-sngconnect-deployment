@@ -1,7 +1,8 @@
 class nginx_service {
 
   class { 'nginx':
-    confd_purge => true,
+    confd_purge   => true,
+    server_tokens => off,
   }
 
   file { '/srv/default':
