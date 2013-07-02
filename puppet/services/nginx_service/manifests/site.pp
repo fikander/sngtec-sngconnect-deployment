@@ -13,8 +13,10 @@ define nginx_service::site (
   }
 
   nginx::resource::vhost { $domain:
-    ensure => present,
-    proxy  => "http://${name}",
+    ensure                 => present,
+    rewrite_www_to_non_www => true,
+    proxy                  => "http://${name}",
+    require                => Nginx::Resource::Upstream[$name],
   }
 
 }
