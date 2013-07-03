@@ -68,4 +68,14 @@ class monit_service {
     Class["nginx_service"] -> Class["monit_service"]
   }
 
+  if tagged("smtp_service") {
+    monit::monitor { "exim":
+      pidfile => "/var/run/exim4/exim.pid",
+      checks  => [
+        "if failed port 25 protocol smtp then restart",
+      ],
+    }
+    Class["smtp_service"] -> Class["monit_service"]
+  }
+
 }

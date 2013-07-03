@@ -66,6 +66,7 @@ node "monitor" inherits "common" {
 }
 
 node "application" inherits "common" {
+  include smtp_service
   class { "sngconnect_service":
     database_address => "dev-db-1",
   }

@@ -18,6 +18,7 @@ node "common" {
 }
 
 node "base" inherits "common" {
+  include smtp_service
   class { "postgresql_service":
     listening_address     => $ipaddress_lo,
     allow_connection_from => "${ipaddress_lo}/32",
