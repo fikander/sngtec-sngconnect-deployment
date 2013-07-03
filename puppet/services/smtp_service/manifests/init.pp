@@ -5,7 +5,7 @@ class smtp_service {
   }
 
   exec { 'update-exim4.conf':
-    command     => 'update-exim4.conf',
+    command     => '/usr/sbin/update-exim4.conf',
     refreshonly => true,
     require     => Package['exim4'],
   }
