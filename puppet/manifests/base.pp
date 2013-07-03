@@ -61,6 +61,12 @@ node "base" inherits "common" {
       domain   => "connect.snghome.com";
   }
   include monit_service
+  monit_service::site { "hoven_sngconnect_com":
+    port => 8001,
+  }
+  monit_service::site { "connect_snghome_com":
+    port => 8002,
+  }
   class { "firewall_service":
     allow_external_cassandra_access  => false,
     allow_external_postgresql_access => false,

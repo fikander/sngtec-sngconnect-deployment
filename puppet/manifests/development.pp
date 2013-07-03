@@ -90,6 +90,9 @@ node "application" inherits "common" {
     zabbix_server_address => $zabbix_server_address,
   }
   include monit_service
+  monit_service::site { "example_com":
+    port => 8000,
+  }
   include firewall_service
 }
 
