@@ -3,3 +3,9 @@ User git
 Hostname github.com
 PreferredAuthentications publickey
 IdentityFile /root/.ssh/staging_deployment
+
+Host kdtower.synology.me
+User git
+Hostname kdtower.synology.me
+PreferredAuthentications publickey
+IdentityFile /root/.ssh/staging_deployment

@@ -70,7 +70,8 @@ class sngconnect_service (
   }
 
   exec { "/opt/sngconnect/lib/python2.7/site-packages/sngconnect":
-    command   => "/opt/sngconnect/bin/pip install git+ssh://git@github.com/sngtec/sngconnect.git",
+#    command   => "/opt/sngconnect/bin/pip install git+ssh://git@github.com/sngtec/sngconnect.git",
+    command   => "/opt/sngconnect/bin/pip install git+ssh://git@kdtower.synology.me/repositories/sngconnect.git",
     creates   => "/opt/sngconnect/lib/python2.7/site-packages/sngconnect",
     timeout   => 1800,
     logoutput => "on_failure",

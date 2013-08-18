@@ -1,4 +1,7 @@
-Vagrant::Config.run do |config|
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
 
     config.vm.box = "precise64"
     config.vm.box_url = "http://files.vagrantup.com/precise64.box"
@@ -15,43 +18,51 @@ Vagrant::Config.run do |config|
     end
 
     config.vm.define :mon do |subconfig|
-        subconfig.vm.host_name = "dev-mon"
-        subconfig.vm.customize [
-            "modifyvm", :id,
-            "--memory", "1024",
-        ]
-        subconfig.vm.network :hostonly, "192.168.50.2"
-        subconfig.vm.forward_port 80, 9080
+        subconfig.vm.hostname = "dev-mon"
+        subconfig.vm.provider :virtualbox do |vb|
+            vb.customize [
+                "modifyvm", :id,
+                "--memory", "1024",
+            ]
+        end
+        subconfig.vm.network :private_network, ip: "192.168.50.2"
+        subconfig.vm.network :forwarded_port, guest: 80, host: 9080
     end
 
     config.vm.define :app1 do |subconfig|
-        subconfig.vm.host_name = "dev-app-1"
-        subconfig.vm.customize [
-            "modifyvm", :id,
-            "--memory", "256",
-        ]
-        subconfig.vm.network :hostonly, "192.168.50.3"
-        subconfig.vm.forward_port 80, 8080
+        subconfig.vm.hostname = "dev-app-1"
+        subconfig.vm.provider :virtualbox do |vb|
+            vb.customize [
+                "modifyvm", :id,
+                "--memory", "256",
+            ]
+        end
+        subconfig.vm.network :private_network, ip: "192.168.50.3"
+        subconfig.vm.network :forwarded_port, guest: 80, host: 8080
     end
 
     config.vm.define :db1 do |subconfig|
-        subconfig.vm.host_name = "dev-db-1"
-        subconfig.vm.customize [
-            "modifyvm", :id,
-            "--memory", "512",
-        ]
-        subconfig.vm.network :hostonly, "192.168.50.4"
+        subconfig.vm.hostname = "dev-db-1"
+        subconfig.vm.provider :virtualbox do |vb|
+            vb.customize [
+                "modifyvm", :id,
+                "--memory", "512",
+            ]
+        end
+        subconfig.vm.network :private_network, ip: "192.168.50.4"
     end
 
     config.vm.define :cass1 do |subconfig|
-        subconfig.vm.host_name = "dev-cass-1"
-        subconfig.vm.customize [
-            "modifyvm", :id,
-            "--memory", "2048",
-            "--cpus", "2",
-            "--cpuexecutioncap", "100"
-        ]
-        subconfig.vm.network :hostonly, "192.168.50.5"
+        subconfig.vm.hostname = "dev-cass-1"
+        subconfig.vm.provider :virtualbox do |vb|
+            vb.customize [
+                "modifyvm", :id,
+                "--memory", "2048",
+                "--cpus", "2",
+                "--cpuexecutioncap", "100"
+            ]
+        end
+        subconfig.vm.network :private_network, ip: "192.168.50.5"
     end
 
 end

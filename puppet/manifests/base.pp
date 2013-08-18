@@ -24,6 +24,7 @@ node "base" inherits "common" {
     allow_connection_from => "${ipaddress_lo}/32",
   }
   postgresql_service::site {
+    "demo_sngconnect_com":;
     "hoven_sngconnect_com":;
     "connect_snghome_com":;
   }
@@ -37,6 +38,13 @@ node "base" inherits "common" {
     database_address => "sng-base-1",
   }
   sngconnect_service::site {
+    "demo_sngconnect_com":
+      listening_port => 8003,
+      session_secret => "82SdhqeiewrQEH324bWEFh28SSDHFs",
+      cassandra_servers => [
+        "127.0.0.1",
+      ],
+      database_server => "127.0.0.1";
     "hoven_sngconnect_com":
       listening_port => 8001,
       session_secret => "7iT28vXpcYnogucsBe9g9gxppApNKQ",
@@ -54,6 +62,9 @@ node "base" inherits "common" {
   }
   include nginx_service
   nginx_service::site {
+    "demo_sngconnect_com":
+      port     => 8003,
+      domain   => "demo.sngconnect.com";
     "hoven_sngconnect_com":
       port     => 8001,
       domain   => "hoven.sngconnect.com";
@@ -67,6 +78,9 @@ node "base" inherits "common" {
   }
   monit_service::site { "connect_snghome_com":
     port => 8002,
+  }
+  monit_service::site { "demo_sngconnect_com":
+    port => 8003,
   }
   class { "firewall_service":
     allow_external_cassandra_access  => false,
