@@ -107,11 +107,6 @@ class sngconnect_service (
   file { "/etc/sngconnect":
     ensure => directory,
   }
-  file { "/var/run/sngconnect":
-    ensure => directory,
-    group  => "sngconnect",
-    mode   => "775",
-  }
   file { "/var/log/sngconnect":
     ensure => directory,
     group  => "sngconnect",

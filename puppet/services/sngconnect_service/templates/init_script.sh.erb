@@ -12,6 +12,12 @@ PID_FILE="<%= pid_file %>"
 
 start_service()
 {
+    PID_DIR=`dirname $PID_FILE`
+    if [ ! -d ${PID_DIR} ]; then
+        mkdir -p ${PID_DIR}
+        chgrp sngconnect ${PID_DIR}
+        chmod 775 ${PID_DIR}
+    fi
     $SU - $USER -s $SHELL -c "$PSERVE $CONFIGURATION --daemon --pid-file=$PID_FILE --log-file=$LOG_FILE"
 }
 
