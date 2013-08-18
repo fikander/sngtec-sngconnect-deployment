@@ -42,3 +42,36 @@ If saved in `/root/run_puppet.sh` it can be run with:
     $ ./run_puppet.sh
 
 After that the server should be fully functional.
+
+FAQ
+---
+
+1. How to add new instance?
+
+    - update puppet/manifests/base.pp to add new nginx vhost and sngconnect database etc.
+    - push to git
+    - on the server:
+
+        $ cd /root/sngconnect-deployment && git pull
+        $ cd /root && ./run_puppet.sh
+
+    - initialise databases for the new instance
+
+        $ sudo -u sngconnect bash
+        $ cd /opt/sngconnect
+        $ . bin/activate
+        $ sng_initialize_database /etc/sngconnect/{INSTANCE}.ini
+        $ sng_initialize_cassandra /etc/sngconnect/{INSTANCE}.ini
+
+    - you need to start new sngconnect instance manually:
+
+        $ sudo /etc/init.d/{INSTANCE_ID} start
+
+2. How to upgrade sngconnect package?
+
+3. How to start pshell for an sngconnect instance
+
+    $ sudo -u sngconnect bash
+    $ cd /opt/sngconnect
+    $ . bin/activate
+    $ pshell /etc/sngconnect/{INSTANCE}.ini
