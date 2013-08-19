@@ -48,7 +48,8 @@ FAQ
 
 1. How to add new instance?
 
-    - update puppet/manifests/base.pp to add new nginx vhost and sngconnect database etc.
+    - update puppet/manifests/base.pp to add new nginx vhost and sngconnect
+      database etc.
     - push to git
     - on the server:
 
@@ -60,10 +61,13 @@ FAQ
         $ sudo -u sngconnect bash
         $ cd /opt/sngconnect
         $ . bin/activate
-        $ sng_initialize_database /etc/sngconnect/{INSTANCE}.ini
-        $ sng_initialize_cassandra /etc/sngconnect/{INSTANCE}.ini
+        $ sng_initialize_database /etc/sngconnect/{INSTANCE_ID}.ini
+        $ sng_initialize_cassandra /etc/sngconnect/{INSTANCE_ID}.ini
 
-    - you need to start new sngconnect instance manually:
+    - you don't need to start new sngconnect instance manually, since monit
+      will do it for you within 20 seconds(check
+      /etc/monit/conf.d/{INSTANCE_ID}.conf to see monit configuration created
+      by puppet). If you do need to start it manually, use:
 
         $ sudo /etc/init.d/{INSTANCE_ID} start
 
