@@ -73,6 +73,23 @@ FAQ
 
 2. How to upgrade sngconnect package?
 
+    - as a root: clone repo, uninstall sngconnect and reinstall new one from repo
+
+        $ sudo su
+        $ git clone git@kdtower.synology.me:repositories/sngconnect.git /tmp/sngconnect
+        $ /opt/sngconnect/bin/pip uninstall sngconnect
+        $ /opt/sngconnect/bin/pip install file:/tmp/sngconnect
+
+    - restart pserve servers
+
+        $ /etc/init.d/demo_sngconnect_com restart
+        $ /etc/init.d/XXX restart
+
+    - change owner and group for these files to sngconnect:
+
+        $ chown sngconnect:sngconnect /opt/sngconnect/lib/python2.7/site-packages/sngconnect/static/.webassets-cache
+        $ chown sngconnect:sngconnect /opt/sngconnect/lib/python2.7/site-packages/sngconnect/static/compressed
+
 3. How to start pshell for an sngconnect instance
 
     $ sudo -u sngconnect bash
