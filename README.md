@@ -73,17 +73,27 @@ FAQ
 
 2. How to upgrade sngconnect package?
 
-    - as a root: clone repo, uninstall sngconnect and reinstall new one from repo
+    - as a root: clone repo, activate venv,
+      uninstall sngconnect and reinstall new one from repo
 
         $ sudo su
         $ git clone git@kdtower.synology.me:repositories/sngconnect.git /tmp/sngconnect
-        $ /opt/sngconnect/bin/pip uninstall sngconnect
-        $ /opt/sngconnect/bin/pip install file:/tmp/sngconnect
+        $ . /opt/sngconnect/bin/activate
 
-    - restart pserve servers
+    - stop pserve servers
 
-        $ /etc/init.d/demo_sngconnect_com restart
-        $ /etc/init.d/XXX restart
+        $ /etc/init.d/demo_sngconnect_com stop
+        $ /etc/init.d/XXX stop
+
+    - uninstall and install sngconnect
+
+        $ pip uninstall sngconnect
+        $ pip install file:/tmp/sngconnect
+
+    - start pserve servers
+
+        $ /etc/init.d/demo_sngconnect_com start
+        $ /etc/init.d/XXX start
 
     - change owner and group for these files to sngconnect:
 
@@ -96,3 +106,9 @@ FAQ
     $ cd /opt/sngconnect
     $ . bin/activate
     $ pshell /etc/sngconnect/{INSTANCE}.ini
+
+4. How to start postgres cli
+
+   $ sudo -u postgres psql
+   postgres=# \l
+   postgres=# \c DATABASE_NAME
