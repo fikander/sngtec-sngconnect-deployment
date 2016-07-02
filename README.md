@@ -77,7 +77,7 @@ FAQ
       uninstall sngconnect and reinstall new one from repo
 
         $ sudo su
-        $ git clone git@kdtower.synology.me:repositories/sngconnect.git /tmp/sngconnect
+        $ git clone <git_server>:<git_repo> /tmp/sngconnect
         $ . /opt/sngconnect/bin/activate
 
     - stop pserve servers
